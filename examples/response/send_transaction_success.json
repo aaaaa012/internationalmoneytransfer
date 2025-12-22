@@ -1,0 +1,12 @@
+{
+    "code": "0",
+    "message": "Transaction Initiated Successfully",
+    "data": {
+        "confirmationId": "882910002",
+        "agentTxnId": "PARTNER_REF_88291",
+        "status": "Unpaid_Hold",
+        "exchangeRate": 1.0,
+        "payoutAmount": 50000,
+        "serviceCharge": 0
+    }
+}
