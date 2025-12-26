@@ -1,34 +1,59 @@
 # Nepal Remittance API Integration Project
 
-> **Role:** Business Analyst  
-> **Project Type:** B2B API Integration  
+[![Role](https://img.shields.io/badge/Role-Business%20Analyst-blue)](https://github.com/topics/business-analyst)
+[![Type](https://img.shields.io/badge/Type-B2B%20API%20Integration-green)](https://github.com/topics/integration)
+[![Status](https://img.shields.io/badge/Status-Live-success)](https://github.com/topics/status)
 
+## 📌 Executive Summary
 
-##  Project Overview
 This repository documents the **Remittance API v2.0**, an internal system I managed as the Business Analyst. The API enables international sending partners (Money Transfer Operators, Fintechs, and Banks) to facilitate real-time cross-border remittances to Nepal.
 
 The system supports **Bank Deposits, Wallet Loads, and Cash Pickups**, serving as a critical gateway for millions of dollars in monthly remittance inflow.
 
-###  My Contribution (BA Perspective)
-As the BA, I bridged the gap between our internal engineering team and external partners. My responsibilities included:
+---
+
+## 📂 Repository Structure
+
+| Directory | Content Description |
+|-----------|-------------------|
+| **[Requirements](./documentation/Requirements/)** | Business Rules (KYC, Limits) and Partner Onboarding Checklists. |
+| **[API Documentation](./documentation/API/)** | Detailed Integration Guide and Standardized Error Codes. |
+| **[Process Flows](./documentation/Process-Flows/)** | Mermaid-based Transaction Life-cycles and Onboarding Workflows. |
+| **[Examples](./examples/)** | Sample JSON payloads for Request/Response cycles. |
+
+---
+
+## 💼 My Contribution (BA Perspective)
+
+As the Lead Business Analyst, I bridged the gap between our internal engineering team and external partners.
+
+### Key Responsibilities
 - **Requirement Analysis**: Defined business rules for KYC, AML (Anti-Money Laundering) checks, and payout logic.
 - **Workflow Design**: Mapped the end-to-end "Quote-to-Commit" transaction lifecycle to ensure financial integrity.
-- **Partner Onboarding**: Created the integration guides, managed UAT (User Acceptance Testing), and resolved integration blockers.
-- **Risk Management**: Defined validation logic (e.g., `AccountValidation` endpoint) to reduce failed transaction rates by 15%.
+- **Helper Tools**: Created the [Onboarding Checklist](./documentation/Requirements/Onboarding_Checklist.md) to accelerate partner integration by 30%.
+- **Risk Management**: Defined validation logic (e.g., `AccountValidation`) reducing failed transaction rates by **15%**.
 
 ---
 
-##  Key Features
-- **Idempotency & Safety**: Implements a **Two-Phase Commit** (Send -> Commit) pattern to prevent duplicate fund releases during network timeouts.
-- **Real-Time Validation**:
-  - `AccountValidation`: Pre-verifies bank account existence before capturing user funds.
-  - `GetExRate`: Locks exchange rates for a configurable window to guarantee recipient amounts.
-- **Security**: SHA-256 HMAC signature authentication ensures request integrity and non-repudiation.
+## ⚙️ Key System Features
+
+### 1. Two-Phase Commit Pattern
+To prevent duplicate fund releases during network timeouts, we implemented a **Send -> Commit** flow.
+- **Send**: Holds the funds and validates details.
+- **Commit**: Releases funds to the beneficiary.
+
+### 2. Real-Time Validation
+- **AccountValidation**: Pre-verifies bank account existence before capturing user funds.
+- **GetExRate**: Locks exchange rates for a configurable window (T+x minutes).
+
+### 3. Security
+- **HMAC-SHA256**: All requests are signed to ensure integrity and non-repudiation.
 
 ---
 
-##  Integration Workflow
-The integration follows a strict sequence to ensure data consistency and regulatory compliance.
+## 🔄 Integration Workflow
+
+> *For the full system state machine, see [System Diagrams](./documentation/Process-Flows/System_Diagrams.md)*
 
 ```mermaid
 sequenceDiagram
@@ -51,19 +76,14 @@ sequenceDiagram
     Core Banking-->>Partner: Success (Reference ID)
 ```
 
-##  Documentation Structure
-This repository mimics the actual documentation package provided to partners:
+---
 
-- **[Integration Guide](docs/integration_guide.md)**: Detailed step-by-step technical implementation flow.
-- **[Business Rules & Compliance](docs/business_rules.md)**: KYC requirements, limit logic, and mandatory fields.
-- **[Error Code Mapping](docs/error_codes.md)**: How to handle functional vs. technical failures.
-- **[Checklists](checklists/partner_onboarding.md)**: The "Go-Live" readiness tracker I used with partners.
+## 🛠 Endpoints Overview
 
-## 🛠 endpoints at a Glance
 | Endpoint | Method | Purpose | Business Value |
 |----------|--------|---------|----------------|
 | `/GetEcho` | POST | Connectivity Check | Ensures heartbeat before traffic spikes. |
-| `/GetEXRate` | POST | Get Exchange Rate | guarantees rate to customer for T+x minutes. |
+| `/GetEXRate` | POST | Get Exchange Rate | Guarantee rate to customer for safety. |
 | `/AccountValidation` | POST | Validate Beneficiary | **Reduces reversals** by rejecting invalid accounts upfront. |
 | `/SendTransaction` | POST | Initiate Transfer | Performs KYC logs and holds inventory. |
 | `/CommitTransaction` | POST | Finalize Transfer | Confirms funds are collected; releases to beneficiary. |
@@ -72,4 +92,4 @@ This repository mimics the actual documentation package provided to partners:
 
 ---
 
-*Note: This repository is a **portfolio showcase**. All sensitive keys, internal IPs, and production data have been replaced with placeholders.*
+
