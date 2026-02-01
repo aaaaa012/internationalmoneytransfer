@@ -24,4 +24,4 @@ This document helps partner developers handle API responses correctly. I designe
 | `9002` | Technical | System Timeout | **Retry** using `QueryTXNStatus` first. |
 | `9003` | Technical | Database Lock | Wait 5 seconds and retry. |
 
-> **BA Tip**: If you receive `9002` (Timeout), never assume the transaction failed. Always query the status to prevent double-charging your customer.
+ **Note**: If you receive `9002` (Timeout), never assume the transaction failed. Always query the status to prevent double-charging your customer.
